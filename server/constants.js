@@ -28,12 +28,13 @@ const COMPANIES = [
 
 const CATEGORIES = [
   { id: 'kund', name: 'Kundmöte & försäljning' },
+  { id: 'marknad', name: 'Marknad, event & kommunikation' },
   { id: 'skada', name: 'Skadehantering' },
   { id: 'bank', name: 'Bank & finans' },
   { id: 'liv-pension', name: 'Liv & pension' },
   { id: 'digitalt', name: 'Digitalisering & IT' },
   { id: 'process', name: 'Process & effektivisering' },
-  { id: 'ledarskap', name: 'Ledarskap & medarbetare' },
+  { id: 'ledarskap', name: 'HR, ledarskap & medarbetare' },
   { id: 'hallbarhet', name: 'Hållbarhet' },
   { id: 'risk', name: 'Risk & regelefterlevnad' },
   { id: 'ovrigt', name: 'Övrigt' },
