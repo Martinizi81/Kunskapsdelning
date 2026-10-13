@@ -1,0 +1,19 @@
+{
+  "name": "kunskapsdelning",
+  "version": "1.0.0",
+  "description": "Öppen plattform för kunskapsdelning mellan bolagen i Länsförsäkringsgruppen",
+  "private": true,
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "seed": "node --disable-warning=ExperimentalWarning server/seed.js",
+    "demo": "node --disable-warning=ExperimentalWarning server/seed.js && node --disable-warning=ExperimentalWarning server/index.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
