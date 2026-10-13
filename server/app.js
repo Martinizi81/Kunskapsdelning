@@ -498,4 +498,4 @@ function createApp({ db, adminKey = '', writesPerMinute = 30 }) {
   return app;
 }
 
-module.exports = { createApp, toFtsQuery, nameKey };
+module.exports = { createApp, toFtsQuery, nameKey, LIMITS };

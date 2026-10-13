@@ -88,6 +88,8 @@ textarea.short { min-height: 80px; }
 .panel { background: var(--lf-blue-10); padding: 16px 16px 0; margin-bottom: 18px; border-radius: var(--radius); }
 .panel-title { font-family: var(--font-heading); color: var(--lf-blue); font-size: 1.15rem; margin-bottom: 10px; display: block; }
 
+.demo-banner { background: #fff4d6; color: #5c4300; border-bottom: 1px solid #f0d68a; padding: 10px 0; font-size: .9rem; }
+
 /* Layout */
 main { padding-top: 28px; padding-bottom: 48px; min-height: 60vh; }
 main:focus { outline: none; }

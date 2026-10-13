@@ -4,6 +4,12 @@ En öppen webbplattform där alla medarbetare i de 23 länsförsäkringsbolagen 
 
 Ingen inloggning behövs. Man skriver bara sitt namn och väljer bolag när man lämnar in sitt kort.
 
+## Prova direkt i webbläsaren
+
+**<https://martinizi81.github.io/Kunskapsdelning/>**
+
+Det här är en demoversion som publiceras automatiskt på GitHub Pages varje gång ändringar slås ihop till `main`. Den fungerar i dator och mobil utan installation. Eftersom GitHub Pages inte kan köra någon server sparas det du själv delar, gillar och kommenterar **bara i din egen webbläsare** – andra ser det inte. För riktig drift där alla ser varandras kort, se *Sätta i drift för alla 10 000 medarbetare* nedan.
+
 ## Vad plattformen kan
 
 | Funktion | Beskrivning |
@@ -16,7 +22,7 @@ Ingen inloggning behövs. Man skriver bara sitt namn och väljer bolag när man 
 | **Topplista** | Mest gillade kunskapsdelningar, personer med flest delningar, mest återanvända kort och bolag som delar mest – för hela tiden, senaste året, 90 eller 30 dagar. |
 | **Personsida** | Klicka på ett namn för att se allt personen har delat. Samma namn + bolag räknas som samma person. |
 | **Ändra / ta bort** | Den som skapat ett kort kan ändra och ta bort det från samma webbläsare. Administratörer kan ta bort olämpligt innehåll (se *Moderering*). |
-| **Exempelinnehåll** | En tom plattform fylls automatiskt med 43 exempelkort från alla 24 bolag, med gillningar, kommentarer och fylld topplista. |
+| **Exempelinnehåll** | En tom plattform fylls automatiskt med 53 exempelkort från alla 24 bolag inom alla områden av bank och försäkring, med gillningar, kommentarer och fylld topplista. |
 
 Utseendet följer Länsförsäkringars grafiska manér: LF-blå (#005AA0), vitt och ljusgrått, röd accent (#E30613), seriffrubriker och rundade knappar. Om typsnitten *LF Rubrik* och *Intro Cond* finns installerade på datorn används de, annars Georgia och Arial.
 
@@ -99,6 +105,7 @@ npm install
 npm test        # kör automatiska tester
 npm start       # startar servern på http://localhost:3000
 npm run seed    # lägger in exempelkort i en tom databas
+npm run build   # bygger fristående webbplats (GitHub Pages) i dist/
 ```
 
 **Teknik:** Node.js 22 + Express 5, inbyggd SQLite (`node:sqlite`) med FTS5-fritextsök. Gränssnittet är ren HTML/CSS/JavaScript utan byggsteg.
@@ -112,6 +119,10 @@ server/
   seed.js       logik för exempelinnehåll
   seed-data.js  själva exempelkorten (texter, personer, kommentarer)
 public/         webbgränssnittet (index.html, app.js, styles.css)
+  static-api.js samma API som servern, men i webbläsaren (används på GitHub Pages)
+scripts/
+  build-static.js bygger webbplatsen för GitHub Pages
+.github/workflows/pages.yml  testar varje ändring och publicerar main till GitHub Pages
 test/           automatiska tester
 ```
 

@@ -28,11 +28,15 @@ function fmtDate(s) {
   return d.toLocaleDateString('sv-SE', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
+// Med server anropas /api. På GitHub Pages (ingen server) körs samma API i webbläsaren, se static-api.js.
+let staticApi = null;
+
 async function api(path, { method = 'GET', body } = {}) {
+  if (staticApi) return staticApi(path, { method, body: body && JSON.parse(JSON.stringify(body)) });
   const headers = { 'Content-Type': 'application/json', 'X-Requested-With': 'kunskapsdelning' };
   const adminKey = store.get('kd_admin', '');
   if (adminKey) headers['X-Admin-Key'] = adminKey;
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`api${path}`, {
     method, headers, body: body ? JSON.stringify(body) : undefined, credentials: 'same-origin',
   });
   const data = await res.json().catch(() => ({}));
@@ -42,6 +46,19 @@ async function api(path, { method = 'GET', body } = {}) {
     throw err;
   }
   return data;
+}
+
+async function detectMode() {
+  try {
+    const res = await fetch('api/meta', { headers: { Accept: 'application/json' } });
+    if (res.ok && (res.headers.get('content-type') || '').includes('json')) return;
+  } catch { /* ingen server */ }
+  const res = await fetch('data.json');
+  if (!res.ok) throw new Error('Kunde inte ladda innehållet.');
+  staticApi = window.KDStatic.create(await res.json());
+  const banner = document.getElementById('demo-banner');
+  banner.innerHTML = '<div class="wrap"><b>Demoversion.</b> Exempelkorten är påhittade. Det du själv delar, gillar och kommenterar sparas bara i din egen webbläsare.</div>';
+  banner.hidden = false;
 }
 
 function toast(msg) {
@@ -450,6 +467,10 @@ async function pagePerson(id) {
 
 async function pageAdmin() {
   setNav('');
+  if (state.meta.static) {
+    $main.innerHTML = '<div class="card empty narrow"><h2>Moderering</h2><p>I demoversionen finns ingen moderering – allt du lägger in syns bara i din egen webbläsare.</p></div>';
+    return;
+  }
   const active = !!store.get('kd_admin', '');
   $main.innerHTML = `
     <form class="card narrow" id="admin">
@@ -497,7 +518,13 @@ window.addEventListener('hashchange', () => {
 });
 
 (async function init() {
-  state.meta = await api('/meta');
+  try {
+    await detectMode();
+    state.meta = await api('/meta');
+  } catch (err) {
+    $main.innerHTML = `<div class="card empty"><h2>Hoppsan!</h2><p>${esc(err.message)}</p></div>`;
+    return;
+  }
   lastPath = location.hash.split('?')[0];
   await route();
 })();
